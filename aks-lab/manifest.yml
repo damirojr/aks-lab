@@ -1,36 +1,38 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: nginx-deploy
+  name: nginx-devopsk8s
 spec:
-  replicas: 2
+  replicas: 5 
   template:
     metadata:
       name: nginx-pod
       labels: 
-        app: nginx1
+        app: nginx
     spec:
       containers:
         - name: nginx-container
-          image: acrparalaboratoriodevops.azurecr.io/devopslab:latest
+          image: acrparalaboratoriodevops.azurecr.io/devopsk8s:latest
           ports: 
            - containerPort: 80
   selector:
     matchLabels:
-      app: nginx1
+      app: nginx
 
 
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: nginx-deploy-loadbalancer
+  name: nginx-loadbalancer
 spec:
   type: LoadBalancer
   selector:
-    app: nginx-deploy
+    app: nginx
   ports:
-    - port: 80
-      targetPort: 80
+  - name: port-tcp
+    protocol: TCP
+    port: 8080
+    targetPort: 80
 
 
